@@ -5,7 +5,7 @@
 **Status:** Draft — evolves as architecture decisions are finalized  
 **Related PRD (Functional):** [PRD — Functional Requirements SUR SSOT](https://www.notion.so/3259532a1f8680b08cc4ebb72fe7b535)  
 **Notion TDR page:** https://www.notion.so/3259532a1f8680e0946ec9fbb1e85d2f  
-**Azure DevOps:** _(To be connected at handoff — see PROJECT-CONTEXT.md)_
+**Azure DevOps:** Epic [676287](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/676287) · org: `axasurion` · project: `AX7 Core` · connected via Cursor MCP
 
 ---
 
