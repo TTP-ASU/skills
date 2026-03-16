@@ -1,6 +1,11 @@
 > **Note:** This repository contains Anthropic's implementation of skills for Claude. For information about the Agent Skills standard, see [agentskills.io](http://agentskills.io).
 
 # Skills
+
+**Confused by the layout?** See **[STRUCTURE.md](./STRUCTURE.md)** — it explains the difference between `skills/`, `skill-template/`, and `templates/`, and how this repo works as your master for rules and skills in any project.
+
+---
+
 Skills are folders of instructions, scripts, and resources that Claude loads dynamically to improve performance on specialized tasks. Skills teach Claude how to complete specific tasks in a repeatable way, whether that's creating documents with your company's brand guidelines, analyzing data using your organization's specific workflows, or automating personal tasks.
 
 For more information, check out:
@@ -22,9 +27,10 @@ Many skills in this repo are open source (Apache 2.0). We've also included the d
 **These skills are provided for demonstration and educational purposes only.** While some of these capabilities may be available in Claude, the implementations and behaviors you receive from Claude may differ from what is shown in these skills. These skills are meant to illustrate patterns and possibilities. Always test skills thoroughly in your own environment before relying on them for critical tasks.
 
 # Skill Sets
-- [./skills](./skills): Skill examples for Creative & Design, Development & Technical, Enterprise & Communication, and Document Skills
+- [./skills](./skills): Skill modules (each subfolder = one skill; these show in the Skills panel)
+- [./skill-template](./skill-template): Blank skeleton to copy when creating a new skill (not a skill itself)
+- [./templates](./templates): Product doc templates (Brief, PRD, open-questions) — document structures, not skills
 - [./spec](./spec): The Agent Skills specification
-- [./template](./template): Skill template
 
 # Try in Claude Code, Claude.ai, and the API
 
@@ -60,7 +66,7 @@ You can use Anthropic's pre-built skills, and upload custom skills, via the Clau
 
 # Creating a Basic Skill
 
-Skills are simple to create - just a folder with a `SKILL.md` file containing YAML frontmatter and instructions. You can use the **template-skill** in this repository as a starting point:
+Skills are simple to create - just a folder with a `SKILL.md` file containing YAML frontmatter and instructions. You can use the **skill-template** folder in this repository as a starting point (copy it, rename, then edit `SKILL.md`):
 
 ```markdown
 ---

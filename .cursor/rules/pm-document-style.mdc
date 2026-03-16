@@ -1,0 +1,48 @@
+---
+description: Thays's preferred formatting for PM documents — tables, conciseness, open questions, Notion sync
+alwaysApply: true
+---
+
+# PM document style preferences
+
+> **Living rule.** When a new formatting pattern or preference is confirmed in conversation, add it here.
+
+## General formatting
+
+- **Tables over bullets** for any list with more than one attribute per item (FRs, NFRs, dependencies, open questions, user stories). Bullets are for single-attribute lists only.
+- **Concise.** No long prose paragraphs inside sections. Short sentences; use a table or bullet if the content has structure.
+- **No redundant headers.** Don't repeat section names in the section content.
+
+## Standard table shapes
+
+Use these column sets consistently:
+
+| Section | Columns |
+|---------|---------|
+| Functional requirements | `# \| Requirement \| What it means \| Open Qs` |
+| Non-functional requirements | `# \| Requirement \| Notes \| Open Qs` |
+| User stories | `ID \| As a… \| I want… \| So that… \| Priority` |
+| Dependencies | `Dependency \| Notes` |
+| Acceptance criteria | `Release \| Story \| Acceptance criteria` |
+| Open questions | `# \| Question \| Owner \| Status \| Answer` |
+
+## Open questions
+
+- Tag architecture blockers as `[ARCH]` inline in the `#` column.
+- Keep the full detail file at `docs/open-questions.md` (with Source and Date columns).
+- In the PRD §7, embed the full table (all rows) — don't summarize into a separate themes table.
+- When an answer is given, update **Status → Resolved**, fill **Answer**, and update the relevant FR/NFR body.
+
+## Leadership / status updates
+
+- Post to the **project page** (the parent APC-XXXX page), not the Brief or PRD page.
+- The project page is the one with `Sub-item` links pointing to the Brief and PRD — it is what leadership checks.
+- Use the weekly update template: Phase · Owner · Progress · Focus next week · Decisions needed · Risks · Links.
+- Append as a new dated section (`## Project Latest Update — Week of [date]`) so history accumulates on the page.
+
+## After editing any document
+
+1. Save locally (the `.md` draft).
+2. Push the updated section(s) to the corresponding Notion page using `notion-update-page` (`replace_content` or `update_content`). Do not skip this step unless the user says so.
+3. For leadership updates: post to the project page (APC-XXXX), not Brief or PRD.
+4. Confirm both files are in sync before closing the task.

@@ -1,0 +1,28 @@
+---
+description: Product management artifact types, quality bar, and decision ownership
+alwaysApply: true
+---
+
+# Product management rules
+
+## Artifact types
+
+- **Product Brief:** Exec-level; problem, solution summary, users, success metrics, scope, dependencies/risks, open questions, next steps. Use for approval and alignment. Follow `templates/product-brief.md` or the user’s Notion template.
+- **PRD:** Implementation-ready; goals, user stories, functional/non-functional requirements, dependencies, acceptance criteria, open questions. Use for handoff to engineering. Follow `templates/prd.md` or the user’s template.
+- Do not mix Brief and PRD: keep Brief concise; put implementation detail in the PRD.
+
+## Quality bar (before calling “done”)
+
+For Briefs and PRDs, ensure:
+- **Problem and success criteria** are explicit.
+- **In scope** and **out of scope** are stated.
+- **Open questions** are listed; when answered, capture the answer and update the relevant requirement (use the meeting-notes/open-questions rule).
+- **Dependencies and owners** are named where relevant.
+- If the user references architecture or standards, cite or link them; do not assume.
+
+## Decisions and ownership
+
+- **Open questions** are owned by the PM; the agent helps capture answers and update the doc, not decide them.
+- Call out **decisions needed** when something is ambiguous or missing; offer options, do not assume.
+- **Prioritization and sign-off** stay with the PM; the agent drafts, suggests, and applies edits when the user confirms.
+- When pulling from meeting notes or other docs, **cite the source** (e.g. “Per kickoff notes…”) and flag conflicts for the user to resolve.
