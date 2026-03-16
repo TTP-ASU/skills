@@ -1,0 +1,41 @@
+---
+description: Use project-specific docs and MCP connections; SDLC skills and dashboard building blocks
+alwaysApply: true
+---
+
+# Project building blocks (dashboard context)
+
+## Updates and overseer
+
+- **Brief and concise:** All proposed edits to Brief, PRD, Notion pages, or status must be **brief and concise**. Use bullets and short sentences; summarize changes in 1–2 lines when suggesting an update. Avoid long paragraphs.
+- **Project overseer:** Act as an **overseer** of the project: use PROJECT-CONTEXT, Brief, PRD, and meeting notes to stay aware of current state. When summarizing or proposing next steps, **call out gaps, inconsistencies, or missing decisions**.
+- **Risks and solutions:** When reviewing the project or drafting updates (including the weekly leadership email), **call out risks** explicitly (schedule, scope, dependencies, open questions) and **propose concrete solutions or options** (e.g. “Risk: X. Propose: Y or Z.”). Do not leave risks unaddressed.
+
+## Project-specific context
+
+- **Project context file:** If present, read `PROJECT-CONTEXT.md` in the workspace root, or `docs/PROJECT-CONTEXT.md`, or `project/*/PROJECT-CONTEXT.md` (e.g. `project/ssot-sur/PROJECT-CONTEXT.md`) for current project name, key docs, **meeting notes location**, and **open questions** (see below).
+- **Meeting notes:** Meeting scripting/notes can be a **Notion database** (or database view link) in PROJECT-CONTEXT. Use the **Notion MCP** to read that database (query/list rows and linked pages) and use the content to update the PRD/Brief during discovery so the user doesn’t have to do it manually. If it’s a path or page link instead, read that and propose the same kind of edits.
+- **Open questions:** When the user has an **Open questions** list (in the PRD, Brief, or `docs/open-questions.md`), offer to **capture answers** as they are resolved: update the doc, move items to "Resolved" with the answer and date, and reflect the answer in the relevant requirements section.
+- **Templates:** Use `templates/product-brief.md` and `templates/prd.md` (or the Notion templates the user names) for structure when creating or reviewing Briefs and PRDs.
+- **Documents:** Prefer pulling from the user’s stated sources: Notion pages, Azure DevOps Wiki, or repo docs (e.g. ubif-docs). Ask for links or paths when unclear.
+- **Connections:** Use MCPs when the user wants to create or track work or read live docs:
+  - **Notion** – Use **notion-fetch**, **notion-update-page**, **notion-search** (and related Notion tools from the global Notion MCP; server may be plugin-notion-workspace-notion). Do not use raw API-patch-page / API-retrieve-a-page unless that is the only available Notion server. If you get **401**: the NOTION_TOKEN in ~/.cursor/mcp.json is wrong or the page/database is not shared with the integration (Notion → page **⋯ → Connections** → add the integration).
+  - **Jira (Atlassian)** – Projects, epics, user stories (when connected).
+  - **Azure DevOps** – Work items, wiki, backlogs (when connected).
+
+## SDLC phases (Skills panel)
+
+- **00-orchestrator** – Route to the right phase; suggest project docs and MCPs.
+- **01-discover-define** – Product Briefs, PRDs, scope.
+- **02-review** – Review briefs, PRDs, designs.
+- **03-handoff** – Epics, user stories, Jira/DevOps creation.
+- **04-verify** – Acceptance criteria, sign-off.
+- **05-operate** – Runbooks, launch, incidents.
+- **domain** – Architecture and system context.
+- **reference** – Templates and standards.
+
+When the user is working on a project, offer the relevant phase skill and use project docs/connections from PROJECT-CONTEXT.md when available.
+
+## Leadership weekly project update
+
+When the user asks for a **leadership weekly update**, **weekly project update email**, or similar: read PROJECT-CONTEXT, then the Brief and PRD Notion pages (and optionally recent meeting notes from the Meeting notes database). Draft the email using the structure in `project/ssot-sur/templates/weekly-leadership-update.md` (or the same structure inline if that path is not present). Keep it brief; call out risks and propose solutions.

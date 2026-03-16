@@ -1,0 +1,36 @@
+---
+description: Source meeting notes from Notion database to update PRD during discovery; capture answers to open questions
+alwaysApply: true
+---
+
+# Meeting notes and open questions
+
+## Meeting notes source: Notion database (preferred)
+
+Meeting notes / meeting scripting can live in a **Notion database** (or be linked from one). In `PROJECT-CONTEXT.md`, the user sets **Meeting notes** to a Notion **database URL** or a **database view/page link**. Then:
+
+- **During discovery:** Use the **Notion MCP** to read that database (query or list rows) and, when possible, open linked pages for each meeting/scripting entry. Extract from the notes: decisions, scope, requirements, acceptance criteria, and answers to open questions. **Propose concrete PRD (or Brief) section updates** so the user does not have to copy from meeting notes manually.
+- **When the user asks:** e.g. "Update the PRD from meeting notes" or "Pull in the latest meeting scripting" — use the Notion database from PROJECT-CONTEXT, fetch the relevant notes (e.g. recent rows or the entries the user names), and suggest specific edits to the PRD/Brief.
+
+If Meeting notes is a **page link** or **file path** instead of a database, read that source and do the same: extract and propose PRD/Brief updates.
+
+## Meeting notes → PRD / Brief / requirements (any source)
+
+When the user asks to **update a PRD**, **refresh requirements**, or **incorporate meeting feedback**:
+
+1. **Find meeting notes:** Use the **Notion database or link** in `PROJECT-CONTEXT.md` under "Meeting notes" (query/read via Notion MCP), or a path or pasted notes the user gives.
+2. **Extract:** Decisions, scope changes, new requirements, clarified acceptance criteria, and any **answers to open questions**.
+3. **Propose edits:** Suggest specific section updates to the Brief or PRD (and, if applicable, to the Open questions list). Offer to apply edits in chat or via Notion MCP.
+4. **Call out ambiguity:** If the notes conflict with the current doc or are unclear, list options and ask the user to confirm.
+
+The user can say e.g. "Use the notes from the kickoff to update the PRD", "Sync the PRD with the meeting database", or "Pull in meeting scripting and update discovery."
+
+## Capturing answers to open questions
+
+When the user has **open questions** (in the PRD, Brief, or a dedicated list):
+
+1. **Locate the list:** From PROJECT-CONTEXT ("Open questions") or the user’s message (e.g. "Open questions section in the PRD" or `docs/open-questions.md`).
+2. **When the user gives an answer:** Update the open-questions list: mark the question **Resolved**, add the **answer**, **date**, and **source** (e.g. "Stakeholder call 2025-03-16"). Then update the **relevant requirement or section** in the Brief/PRD so the answer is reflected in the body of the doc.
+3. **Format:** Keep a simple table or list: Question | Status | Answer | Date. Offer to create `docs/open-questions.md` if the project doesn’t have one yet.
+
+This keeps PRDs and Briefs in sync with decisions and avoids losing answers in chat.

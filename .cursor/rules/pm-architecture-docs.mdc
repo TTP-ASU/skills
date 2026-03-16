@@ -1,0 +1,48 @@
+---
+description: How to structure architecture sections in PRDs — current vs future state comparison, flows, decision tagging
+alwaysApply: true
+---
+
+# Architecture section in PRDs
+
+> **Living rule.** Add new patterns here when the user confirms a new preferred structure in conversation.
+
+## Section placement
+
+Put architecture as **§2a** (between User Stories and Functional Requirements). It is reference material that FRs point into — not a standalone section.
+
+## Structure: one table per comparison, not prose
+
+Use **side-by-side comparison tables** (not separate current-state then future-state blocks):
+
+### Per-flow table (one row per vendor / use case)
+
+Columns: `Flow | Vendor | Current state | Future state | Gap / pain point | Open Qs`
+
+- Keep each cell to 1–3 short sentences.
+- Reference open question IDs (e.g. `OQ: G1`) in the Open Qs column — do not repeat the full question.
+
+### Core flow comparison table
+
+For the main availability/reservation flow, use a two-column table:
+
+| | Current state | Future state |
+|-|---------------|--------------|
+
+Rows cover the key dimensions: trigger, data source, BOM lookup, JIT, bypass, reservation, reservation ID, part price.
+
+### JIT mechanics table (if JIT is in scope)
+
+Same two-column structure. Rows: orderability signal, job-type exclusions, receiving, scope.
+
+## Architecture decision tagging
+
+- Tag unresolved architecture decisions as **`[ARCH]`** inline wherever they appear (FR table, NFR table, open questions `#` column).
+- List all `[ARCH]` items in the open questions table (§7) with Owner and Status.
+- `[ARCH]` items **block FR finalization** — call this out explicitly in the PRD footer note.
+
+## FRs referencing architecture
+
+- In the `Open Qs` column of FR table, reference the open question ID (e.g. `A1 [ARCH], D2 [ARCH]`).
+- Do not repeat the question text — link to `docs/open-questions.md`.
+- When an architecture decision is resolved, remove `[ARCH]` tag from the FR and update the requirement description.
