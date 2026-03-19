@@ -41,10 +41,10 @@
 | Story | EP4-S1 | Soft reservation created at lead placement | FR-10 | Q2/Q3 | P0 | Draft | _(pending)_ | C1, C4, I2 |
 | Story | EP4-S2 | Soft reservation reconciles with final store reservation | FR-10 | Q2/Q3 | P0 | Draft | _(pending)_ | C5, I2 |
 | Story | EP4-S3 | Soft reservation expiration model | FR-10 | Q2/Q3 | P0 | Draft | _(pending)_ | C4 |
-| **Epic** | EP-5 | AOP migration — 3rd party Asurion-owned parts | FR-5 | Q3 | — | Discovery | [677040](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677040) | G1 G2 |
+|| **Epic** | EP-5 | AOP migration — 3rd party Asurion-owned parts | FR-5 | Q3 | — | Discovery | [677040](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677040) | G1 G2 H15 H16 |
 | Story | EP5-S1 | Full inventory lifecycle in D365 for AOP | FR-5 | Q3 | P1 | Draft | _(pending)_ | G1, I2 |
-| Story | EP5-S2 | AOP inventory UI via WMA (Phase 1) | FR-5 | Q3 | P1 | Draft | _(pending)_ | G1 |
-| Story | EP5-S3 | Hydra identity for AOP providers in Prism | FR-5 | Q3 | P1 | Draft | _(pending)_ | G2 |
+|| Story | EP5-S2 | AOP inventory UI via native WMA (Phase 1 — web-based WMA ruled out) | FR-5 | Q3 | P1 | Draft | _(pending)_ | G1, H15 |
+|| Story | EP5-S3 | Hydra identity for AOP providers in Prism | FR-5 | Q3 | P1 | Draft | _(pending)_ | G2, H16 |
 | Story | EP5-S4 | Automated SKU/MDM setup in DAX (no SB replication) | FR-5 | Q3 | P1 | Draft | _(pending)_ | F1, F2 |
 | **Epic** | EP-6 | BOM/MDM automation + substitution matrix | FR-9, FR-11 | Q3/Q4 | — | Discovery | [679640](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679640) | A3 F1 F2 H4 |
 | Story | EP6-S1 | Single-touch BOM setup in DAX (Asurion + OEM SKUs) | FR-9, FR-11 | Q3/Q4 | P1 | Draft | _(pending)_ | F1 |
@@ -334,18 +334,22 @@
 
 ---
 
-#### EP5-S2 — AOP inventory UI via WMA (Phase 1)
+#### EP5-S2 — AOP inventory UI via native WMA (Phase 1 — web-based WMA ruled out)
 
 **As a** 3rd party AOP provider
-**I want** access to DAX inventory management via WMA (Phase 1), accessible from a link in Prism
+**I want** access to DAX inventory management via the **native WMA app**, accessible from a link in Prism
 **So that** I can manage inventory in a single system without needing ServiceBench
 
-**Acceptance criteria:**
-1. WMA is accessible via Prism link; provider can complete full AOP lifecycle (orders, receiving, transfers, RMA, cycle count).
-2. Phase 2 path (Prism MFE / Single Pane of Glass) scoped separately; not a blocker for this story.
-3. Identity and access model confirmed (G2).
+> **Note (2026-03-18):** Web-based WMA (portal-embedded wrapper) was evaluated and ruled out — certification burden, performance concerns, user management complexity. Native WMA app confirmed. Whether 3rd party AOP locations need WMA UI at all vs. systematic API-only must be confirmed (H15) before this story is fully scoped.
 
-**Blocked by:** G1 (EA sign-off on WMA path) | **ADO Story ID:** _(pending)_
+**Acceptance criteria:**
+1. Native WMA app is accessible via Prism link; provider can complete full AOP lifecycle (orders, receiving, transfers, RMA, cycle count).
+2. Web-based WMA is not used; all AOP inventory management is in native WMA.
+3. Phase 2 path (Prism Single Pane of Glass) scoped separately; not a blocker for this story.
+4. Identity and access model confirmed (G2, H16).
+5. _If H15 resolves as API-only: this story is rescoped or removed._
+
+**Blocked by:** G1 (EA sign-off on native WMA), H15 (WMA UI vs API-only) | **ADO Story ID:** _(pending)_
 
 ---
 
