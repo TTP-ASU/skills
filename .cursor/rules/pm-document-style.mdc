@@ -37,12 +37,167 @@ Use these column sets consistently:
 
 - Post to the **project page** (the parent APC-XXXX page), not the Brief or PRD page.
 - The project page is the one with `Sub-item` links pointing to the Brief and PRD — it is what leadership checks.
-- Use the weekly update template: Phase · Owner · Progress · Focus next week · Decisions needed · Risks · Links.
 - Append as a new dated section (`## Project Latest Update — Week of [date]`) so history accumulates on the page.
+
+### Leadership update content rules
+
+**Include only what is relevant to project outcomes.** Leadership does not need internal document changes, story counts, or tooling updates.
+
+| Section | Include | Exclude |
+|---------|---------|---------|
+| Progress | Meetings held, decisions made, working sessions completed, milestones achieved | PRD/TDR restructuring, RACI edits, Notion tooling, command files, story-level backlog changes |
+| Focus next week | Architecture sessions to schedule, stakeholder meetings, key decisions to drive | Story grooming, document formatting, internal process tasks |
+| Decisions needed | Leadership-level gates: EA assignment, scope confirmation, partner decisions | Story-level blockers, tooling choices, internal PM process |
+| Risks | Business and delivery risks with mitigants | Internal document drift, tooling gaps |
+| Links | Project page link only (optional) | Notion page links, ADO links, doc paths |
+
+**Format:** Tables and bullets; no prose paragraphs; no story IDs or Notion URLs in the body.
+
+## Sync workflow — review before push (REQUIRED)
+
+**Never auto-push to Notion without explicit user confirmation.** Follow this sequence every time:
+
+1. **Draft locally** — make all changes to the `.md` file first.
+2. **Show a diff summary** — present a concise bulleted list of what changed (section, what was added/modified/removed). Do NOT push yet.
+3. **Wait for approval** — user says "looks good", "push it", "send to Notion", or equivalent. If user asks to revise, update the local file and show the diff again.
+4. **Push to Notion** — only then call `notion-update-page`. Push only the changed sections, not the full page unless necessary.
+5. **Confirm sync** — report which Notion page(s) were updated and what sections changed.
+
+> Exception: if the user explicitly says "push directly" or "don't ask", skip step 3.
+
+## Sync trigger events
+
+Push to Notion when any of these happen:
+- An open question is answered → update `open-questions.md` + PRD §7 + unblock the relevant FR/story
+- A FR changes → review TDR for affected stories; update both docs
+- A story is groomed or accepted → update ADO ID in TDR; sync status
+- Weekly leadership update is drafted
+- Architecture decision is made → remove `[ARCH]` tag from FR, update story AC
+
+## Document hierarchy (source of truth order)
+
+```
+Meeting notes → Open Questions → PRD-FR → TDR → ADO
+```
+- Changes flow **downward** only. ADO stories never update the PRD without a meeting/decision first.
+- The local `.md` files are always the review/draft layer. Notion is the published layer.
+
+## TDR (Technical Development Requirements)
+
+### Epic header format
+
+Each Epic section must open with a 2-column metadata table before any story content:
+
+```markdown
+| Field | Value |
+|-------|-------|
+| **Goal** | One sentence — what this epic delivers |
+| **Linked FRs** | FR-1, FR-2 |
+| **ADO Feature(s)** | [677038](https://axasurion.visualstudio.com/...) |
+| **Quarter** | Q1 |
+| **Status** | Discovery |
+| **Architecture blockers** | A1, A2 — stories `[BLOCKED]` until resolved |
+```
+
+### Story table format (summary — scannable)
+
+Follow the summary table immediately after the epic header:
+
+```markdown
+| ID | Summary | Priority | Status | ADO Story ID | Blocked by |
+|----|---------|----------|--------|--------------|------------|
+| EP1-S1 | Real-time availability endpoint | P0 | Draft | _(pending)_ | A1, A2, D1, D2 |
+```
+
+Columns:
+- **ID** — EPX-SY format
+- **Summary** — 5–8 word description of the story intent (not the full "As a…" sentence)
+- **Priority** — P0 / P1 / P2 / TBD
+- **Status** — see lifecycle below
+- **ADO Story ID** — link to ADO work item once created; `_(pending)_` until then
+- **Blocked by** — open question IDs; blank if unblocked
+
+### Story status lifecycle
+
+`Draft` → `Grooming Ready` → `In ADO` → `In Sprint` → `Done`
+
+- **Draft**: story written, blockers unresolved — do not groom
+- **Grooming Ready**: every referenced [ARCH] blocker is resolved — ready to take to sprint planning
+- **In ADO**: work item created in Azure DevOps; ADO Story ID column filled
+- **In Sprint**: actively being developed
+- **Done**: shipped and validated
+
+**Gating rule:** A story must NOT move to `Grooming Ready` while any open question in its `Blocked by` column has Status = Open in `open-questions.md`.
+
+### Story detail blocks
+
+After the summary table, add one subsection per story with the full user story and numbered acceptance criteria. Never put AC inline in the table.
+
+```markdown
+#### EP1-S1 — Real-time availability endpoint
+
+**As a** ServiceBench consumer
+**I want** a single DAX endpoint to check SUR part availability per part line
+**So that** I get real-time data without replication lag
+
+**Acceptance criteria:**
+1. API returns availability flag, JIT flag, shipping days out, bypass flag, Asurion + OEM SKUs per part line.
+2. Response time ≤ SB local-lookup baseline.
+3. Existing UBIF replication feed is deprecated for migrated stores.
+
+**Blocked by:** A1, A2, D1, D2 | **ADO Story ID:** _(pending)_
+```
+
+### TDR master backlog table (current format — Option 1)
+
+The TDR document uses a **single flat master backlog table** interleaving Epic and Story rows. This is the current standard. Epic rows hold ADO Feature IDs; Story rows hold ADO User Story IDs once created.
+
+```markdown
+| Type | ID | Summary | FR | Quarter | Priority | Status | ADO ID | Blocked by |
+|------|----|---------|----|---------|----------|--------|--------|------------|
+| **Epic** | EP-1 | DAX availability + UBIF | FR-1, FR-2, FR-6 | Q1 | — | Discovery | 677038 · 679502 | A1 A2 D1–D4 |
+| Story | EP1-S1 | Real-time availability endpoint | FR-1 | Q1 | P0 | Draft | _(pending)_ | A1, A2, D1, D2 |
+```
+
+- **Type** column: `**Epic**` (bold) or `Story`
+- **FR** column: map each story to its specific FR(s), not just the epic-level list
+- **ADO ID** column: Epic rows → ADO Feature link(s); Story rows → ADO User Story link once created
+- Story detail blocks (As a / I want / So that + numbered AC) go in a `## Story details` section below the master table, grouped by epic
+
+> **Future (grooming phase):** Convert to 3-table Notion relational database (FRs ↔ Epics ↔ Stories). See `PROJECT-CONTEXT.md` Phase gates.
+
+### ADO sync rules for TDR
+
+- When a User Story is created in ADO: fill the ADO Story ID column with a hyperlink; change Status → `In ADO`
+- When a User Story moves to sprint: change Status → `In Sprint`
+- When an [ARCH] blocker is resolved: update Blocked by column, re-evaluate gating rule, move eligible stories to `Grooming Ready`
+
+---
+
+## Update commands — trigger patterns and workflows
+
+Full command reference: `project/ssot-sur/COMMANDS.md`. Recognize these patterns and execute the corresponding workflow.
+
+| User says (pattern) | Workflow |
+|---------------------|----------|
+| `capture meeting: [name/link/paste/"latest"]` | Fetch notes from Notion meetings DB or paste → extract decisions, scope, answers → propose diffs to PRD-FR, open-questions.md, TDR |
+| `answer: [ID] — [text]. source: [...]` | Resolve OQ row → remove `[ARCH]` if blocker clears → update FR body → update TDR story `Blocked by` → promote story to `Grooming Ready` if all blockers gone |
+| `sync Notion notes` | Fetch PRD-FR + TDR Notion pages → extract inline comments/callouts → map to FRs/stories/OQs → propose updates |
+| `ingest document: [file or paste]` | Read document → map content to existing FRs or propose new ones → show diff; flag conflicts |
+| `update FR-[X]: [description]` | Update FR row → check TDR for affected stories → propose cascading AC/blocker updates |
+| `story ready: [ID]` | Verify all `Blocked by` items resolved → set TDR status to `Grooming Ready` |
+| `ADO created: [ID] = [URL]` | Fill ADO Story ID in TDR master backlog → set status to `In ADO` |
+| `PRD health check` | Read-only audit: open `[ARCH]` blockers · stories blocked vs ready · FR coverage gaps · OQs without owner |
+| `draft leadership update: week of [date]` | Pull status from PRD-FR + TDR + OQs → draft update → post to APC-2299 project page |
+| `scope change: [description]` | Update PRD §5 scope + appendix → flag affected FRs and stories → surface related OQs |
+| `push PRD` / `push TDR` / `push all` | Push pending local changes to Notion (show diff first unless user says "push directly") |
+
+**Rule:** Every workflow follows the review-before-push sequence defined in `## Sync workflow` above. Never apply changes to Notion without showing the diff first.
 
 ## After editing any document
 
-1. Save locally (the `.md` draft).
-2. Push the updated section(s) to the corresponding Notion page using `notion-update-page` (`replace_content` or `update_content`). Do not skip this step unless the user says so.
-3. For leadership updates: post to the project page (APC-XXXX), not Brief or PRD.
-4. Confirm both files are in sync before closing the task.
+1. Draft locally (the `.md` file).
+2. Show diff summary to user and wait for approval.
+3. On approval: push to Notion using `notion-update-page`.
+4. For leadership updates: post to the project page (APC-XXXX), not Brief or PRD.
+5. Confirm both local and Notion are in sync before closing.
