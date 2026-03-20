@@ -48,15 +48,23 @@ Suggest sections that match their doc type and org norms. Common patterns:
 - Next steps / approval  
 
 **PRD (implementation-ready)** – see `templates/prd.md`  
-- Overview & goals  
-- User stories / use cases  
-- Functional requirements  
-- Non-functional requirements  
-- Dependencies (systems, teams, docs)  
-- Success metrics & acceptance criteria  
-- Open questions (capture answers; update requirements when resolved)  
+- PRD = **what and why** (business context, product requirements, functional requirements, user/process flows)  
+- §1 Overview · §2 Stakeholders & RACI · §3 Business Problem · §4 Goals · §5 Scope · §6 Dependencies · §7 Product Requirements + FRs (grouped by theme/epic) · §8 NFRs · §9 User/Process Flows · §10 Success Metrics · §11 Roadmap · §12 Open Questions · §13 Appendix  
+- Do not include technical design, architecture, or implementation detail here  
 
-If they use a Notion template, mirror that structure. For in-repo work, use `templates/product-brief.md` and `templates/prd.md`; for open-question tracking use `templates/open-questions.md` or the PRD section.
+**TRD (technical design + backlog)** – see `templates/trd.md`  
+- TRD = **how** (architecture, system interactions, data mapping, APIs, migration, cutover, validation, support model, engineering backlog)  
+- §1 Overview (refs PRD) · §2 Architecture · §3 System Interactions · §4 Data Mapping · §5 APIs/Interfaces · §6 Migration Mechanics · §7 Cutover · §8 Technical Validation · §9 Operational Support · §10 Engineering Backlog (epics + stories) · §11 Open Questions (technical) · §12 FR Coverage Audit  
+- Do not restate business context; reference the PRD  
+
+**Sync rules between PRD and TRD:**  
+- PRD is source of truth for intent; TRD is source of truth for implementation  
+- Shared terms (initiative name, system names, flow IDs, FR IDs, entity names) must be identical across both docs  
+- Every PRD flow must trace to a TRD implementation; every FR must trace to TRD stories via the FR Coverage Audit  
+- Product/business open questions stay in the PRD; technical open questions stay in the TRD  
+- Both docs open with a short cross-reference: the PRD points to the TRD and vice versa  
+
+If they use a Notion template, mirror that structure. For in-repo work, use `templates/product-brief.md`, `templates/prd.md`, and `templates/trd.md`; for open-question tracking use `docs/open-questions.md` or the PRD §12.
 
 ### 4. Draft and iterate
 

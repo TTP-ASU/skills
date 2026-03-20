@@ -1,6 +1,7 @@
 ---
 description: How to structure architecture sections in PRDs — current vs future state comparison, flows, decision tagging
-alwaysApply: true
+alwaysApply: false
+globs: ["project/ssot-sur/**"]
 ---
 
 # Architecture section in PRDs

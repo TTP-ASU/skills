@@ -1,6 +1,7 @@
 ---
 description: Use project-specific docs and MCP connections; SDLC skills and dashboard building blocks
-alwaysApply: true
+alwaysApply: false
+globs: ["project/ssot-sur/**"]
 ---
 
 # Project building blocks (dashboard context)
