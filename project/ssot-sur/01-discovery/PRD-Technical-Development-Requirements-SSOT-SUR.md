@@ -1,11 +1,11 @@
 # TRD: Technical Requirements — SUR SSOT (Same Unit Repair · Single Source of Truth)
 
 **Tech lead / architect:** Ankit / Tim Clemens (Enterprise Architecture)  
-**Last updated:** 2026-03-18  
+**Last updated:** 2026-03-23  
 **Status:** Draft — evolves as architecture decisions are finalized  
 **Related PRD:** [PRD — Functional Requirements SUR SSOT](https://www.notion.so/3259532a1f8680b08cc4ebb72fe7b535)  
 **Notion TRD page:** https://www.notion.so/3259532a1f8680e0946ec9fbb1e85d2f  
-**Synced with PRD:** 2026-03-18  
+**Synced with PRD:** 2026-03-23  
 **Azure DevOps:** Epic [676287](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/676287) · org: `axasurion` · project: `AX7 Core` · connected via Cursor MCP
 
 > **Purpose:** This document defines the technical design and implementation approach for the initiative approved in the PRD. Business context, product requirements, functional requirements, and user/process flows are defined in the PRD. This document implements and extends them.
@@ -31,12 +31,12 @@ PRD goals and functional requirements drive all implementation choices. See PRD 
 
 ## 2. Architecture
 
-> **Status:** Being finalized through architecture working sessions. EA review scheduled week of 2026-03-24. [ARCH] blockers A1, A2, D1–D4, E2 must resolve before detailed design can be completed.
+> **Status:** Being finalized through architecture working sessions. EA review scheduled week of 2026-03-24. **[ARCH] remaining:** A2, D1–D4, I1, C1/C4/C5 (reservation), plus **A5** (job-type exclusion dimensions — Job Type / Eligibility 2026-03-23). **Resolved:** A1, E2, D2, A4 (see open-questions.md).
 
 **External references (authoritative):**
 - Parts Management Flows (Figma: `kRrljWUXdow6bg7KBHkkx7`) — Flow 1 (AOP), 2A/2B (NAOP), 3/5 (UBIF), 4 (BOM Setup)
-- DDD Feature Breakdown (architecture working session artifacts — will be linked from Confluence once MCP is connected)
-- SUR SSOT Inventory Availability Orchestration diagrams (Confluence — pending link)
+- [DDD Feature Breakdown](https://asurion.atlassian.net/wiki/spaces/DDD/pages/614007633/Feature+Breakdown) (Confluence space **DDD** — architecture / feature numbering reference for SSOT)
+- SUR SSOT Inventory Availability Orchestration diagrams (Confluence — add link when published beside Feature Breakdown)
 
 _This section will expand with high-level component diagram, system boundaries, and major integration patterns once architecture working sessions complete._
 
@@ -48,12 +48,12 @@ _This section will expand with high-level component diagram, system boundaries, 
 
 | Flow ID | Flow name | Systems involved | Key open question |
 |---------|-----------|-----------------|-------------------|
-| RT-1 | UBIF Next Gen availability | SB → EIAA → DAX Americas Availability Service | E2 [ARCH] — ISP vs SUR routing |
+| RT-1 | UBIF Next Gen availability | SB → EIAA → DAX Americas Availability Service | E2 resolved (LOB); A5 — exclusion dimensions in API |
 | RT-2 | UBIF Legacy availability | SB → EIAA → UBIF Current State | C6 [ARCH] — reservable vs not-reservable |
 | RT-3 | NAOP availability (Canada / Mexico) | SB → EIAA → Tyk API Connect → vendor | B1 [ARCH] — Plan A vs B; B2 [ARCH] — bypass flag location |
 | RT-4 | BOM lookup at job creation | SB → EIAA or separate BOM API | I1 [ARCH] — embed in EIAA vs separate BOM service |
 | RT-5 | Soft reservation at lead placement | SB → IVS → store confirmation | C1 [ARCH] — lifecycle ownership; C4 [ARCH] — expiration; C5 [ARCH] — double-deduction |
-| RT-6 | JIT availability + order | SB → EIAA (JIT flag) → order creation | A4 [ARCH] — job-type exclusion level; D3/D4 [ARCH] — single vs separate call |
+| RT-6 | JIT availability + order | SB → EIAA (JIT flag) → order creation | A4 resolved (SKU); A5 — API dimensions; **D3 resolved**; D4 [ARCH] — single vs separate JIT/reservation call |
 | IL-1–IL-8 | AOP inventory lifecycle | WMA → D365 / DAX | G1 [ARCH] — UI path; G2 [ARCH] — identity |
 
 ---
@@ -77,7 +77,7 @@ Key entities requiring mapping:
 
 | API / Interface | FR | Direction | Notes |
 |-----------------|----|-----------|-------|
-| EIAA availability endpoint | FR-1, FR-8 | SB → DAX | Single endpoint per part line; returns availability flag, JIT flag, shipping days out, bypass flag, Asurion + OEM SKUs. Aligned to DES/ISP pattern. |
+| EIAA availability endpoint | FR-1, FR-8 | SB → DAX | Single endpoint per part line; returns availability flag, JIT flag, shipping days out, bypass flag, Asurion + OEM SKUs; **excluded job types** for job-type eligibility (DAX data; SB adjudicates — Job Type / Eligibility 2026-03-23). Aligned to DES/ISP pattern. |
 | EIAA / IVS reservation endpoint | FR-1 | SB → IVS | Creates and returns Reservation ID. Single vs combined JIT call TBD (D4). |
 | Tyk API Connect — NAOP feed | FR-4 | Vendor → DAX | AWS/JSON; standard contract for all NAOP vendors. |
 | Job/Claim price API | FR-3 | UBIF → SB | Transactional price at Job/Claim creation. |
@@ -141,12 +141,12 @@ _This section will cover: post-launch monitoring ownership (DAPI, BeyondX, Aveng
 
 | Type | ID | Summary | FR | Quarter | Priority | Status | ADO ID | Blocked by |
 |------|----|---------|----|---------|----|--------|--------|-----------|
-| **Epic** | EP-1 | DAX availability API + UBIF orchestration | FR-1, FR-2, FR-6, FR-8 | Q1 | — | Discovery | [677038](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677038) · [679502](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679502) · [677454](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677454) ⚠️ | A1 A2 D1–D5 E2 |
-| Story | EP1-S1 | Real-time availability endpoint | FR-1, FR-8 | Q1 | P0 | Draft | _(pending)_ | A1, A2, D1, D2, I1 |
+| **Epic** | EP-1 | DAX availability API + UBIF orchestration | FR-1, FR-2, FR-6, FR-8 | Q1 | — | Discovery | [677038](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677038) · [679502](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679502) · [677454](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677454) ⚠️ | A2 D1 D4 D5 I1 |
+| Story | EP1-S1 | Real-time availability endpoint | FR-1, FR-8 | Q1 | P0 | Draft | _(pending)_ | A2, D1, I1 |
 | Story | EP1-S2 | Distro Vendor indicator in availability response | FR-2 | Q1 | P0 | Draft | _(pending)_ | D1 |
-| Story | EP1-S3 | ISP vs SUR routing for shared UBIF store ID | FR-6 | Q1 | P0 | Draft | _(pending)_ | E2 |
+| Story | EP1-S3 | ISP vs SUR routing for shared UBIF store ID | FR-6 | Q1 | P0 | **Grooming Ready** | _(pending)_ | — |
 | Story | EP1-S4 | Reservation ID on UBIF and DAX orders | FR-1 | Q1 | P0 | Draft | _(pending)_ | D4 |
-| Story | EP1-S5 | JIT job-type exclusion configuration | FR-8 | Q1 | P1 | Draft | _(pending)_ | A4, D3 |
+| Story | EP1-S5 | JIT job-type exclusion configuration | FR-8 | Q1 | P1 | **Grooming Ready** | _(pending)_ | — |
 | Story | EP1-S6 | JIT order creation and eligibility logic | FR-8 | Q1 | P1 | Draft | _(pending)_ | D4, D5 |
 | **Epic** | EP-2 | Part price on Job/Claim | FR-3 | Q1/Q2 | — | Discovery | _(pending — confirm [H7])_ | — |
 | Story | EP2-S1 | Price on Job/Claim — UBIF Current State | FR-3 | Q1 | P0 | Draft | _(pending)_ | — |
@@ -158,11 +158,11 @@ _This section will cover: post-launch monitoring ownership (DAPI, BeyondX, Aveng
 | Story | EP3-S2b | LCM-only + bypass flag — Plan B (fallback) | FR-4 | Q2 | P1 | Draft | _(pending)_ | B1, B2 |
 | Story | EP3-S3 | ATT Mexico / Telcel feed repointed to DAX IVS API | FR-4 | Q2 | P1 | Draft | _(pending)_ | B4, E1 |
 | **Epic** | EP-4 | Soft reservations via IVS | FR-10 | Q2/Q3 | — | Discovery | _(pending — confirm [H8])_ | C1 C4 C5 |
-| Story | EP4-S1 | Soft reservation created at lead placement | FR-10 | Q2/Q3 | P0 | Draft | _(pending)_ | C1, C4, I2 |
-| Story | EP4-S2 | Soft reservation reconciles with final store reservation | FR-10 | Q2/Q3 | P0 | Draft | _(pending)_ | C5, I2 |
+| Story | EP4-S1 | Soft reservation created at lead placement | FR-10 | Q2/Q3 | P0 | Draft | _(pending)_ | C1, C4 |
+| Story | EP4-S2 | Soft reservation reconciles with final store reservation | FR-10 | Q2/Q3 | P0 | Draft | _(pending)_ | C5 |
 | Story | EP4-S3 | Soft reservation expiration model | FR-10 | Q2/Q3 | P0 | Draft | _(pending)_ | C4 |
 | **Epic** | EP-5 | AOP migration — 3rd party Asurion-owned parts | FR-5 | Q3 | — | Discovery | [677040](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677040) | G1 G2 H15 H16 |
-| Story | EP5-S1 | Full inventory lifecycle in D365 for AOP | FR-5 | Q3 | P1 | Draft | _(pending)_ | G1, I2 |
+| Story | EP5-S1 | Full inventory lifecycle in D365 for AOP | FR-5 | Q3 | P1 | Draft | _(pending)_ | G1 |
 | Story | EP5-S2 | AOP inventory UI via native WMA (Phase 1 — web-based WMA ruled out) | FR-5 | Q3 | P1 | Draft | _(pending)_ | G1, H15 |
 | Story | EP5-S3 | Hydra identity for AOP providers in Prism | FR-5 | Q3 | P1 | Draft | _(pending)_ | G2, H16 |
 | Story | EP5-S4 | Automated SKU/MDM setup in DAX (no SB replication) | FR-5 | Q3 | P1 | Draft | _(pending)_ | F1, F2 |
@@ -193,7 +193,7 @@ _This section will cover: post-launch monitoring ownership (DAPI, BeyondX, Aveng
 | **ADO Feature(s)** | [677038](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677038) · [679502](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679502) |
 | **Quarter** | Q1 |
 | **Status** | Discovery |
-| **Architecture blockers** | A1, A2, D1–D5, E2 — all stories `[BLOCKED]` until resolved |
+| **Architecture blockers** | A2, D1, D4, D5, I1 — **D3 resolved** (exclusions in response); **E2 closed** (ISP vs SUR by LOB); internal DAX UBIF vs America's IVS routing = separate DAX PBI |
 
 #### EP1-S1 — Real-time availability endpoint
 
@@ -206,7 +206,7 @@ _This section will cover: post-launch monitoring ownership (DAPI, BeyondX, Aveng
 2. Response time ≤ SB local-lookup baseline.
 3. Existing UBIF replication feed is deprecated for migrated stores.
 
-**Blocked by:** A1, A2, D1, D2 | **ADO Story ID:** _(pending)_
+**Blocked by:** A2, D1, I1 | **ADO Story ID:** _(pending)_
 
 ---
 
@@ -231,9 +231,10 @@ _This section will cover: post-launch monitoring ownership (DAPI, BeyondX, Aveng
 **So that** ISP availability calls don't mix with SUR availability calls
 
 **Acceptance criteria:**
-1. Routing correctly separates ISP and SUR calls for same UBIF store ID in all test cases.
+1. Routing correctly separates ISP and SUR calls for same UBIF store ID in all test cases (LOB: SUR repair vs replacement ISP — **WLI vs WCF** pattern per Tech Sync 2026-03-20).
+2. Internal DAX work to isolate **UBIF IVS vs America's IVS** warehouse lookups is tracked as **DAX backlog / separate PBI** (not a ServiceBench integration blocker).
 
-**Blocked by:** E2 | **ADO Story ID:** _(pending)_
+**Blocked by:** — | **ADO Story ID:** _(pending)_
 
 ---
 
@@ -254,15 +255,16 @@ _This section will cover: post-launch monitoring ownership (DAPI, BeyondX, Aveng
 #### EP1-S5 — JIT job-type exclusion configuration
 
 **As a** DAX / F&O configuration owner
-**I want** job-type exclusions modeled at the correct level (SKU or equipment type) in D365
+**I want** job-type exclusions modeled at **SKU level** in D365
 **So that** JIT-ineligible job types (e.g., non-OSR/CSS) are correctly excluded from JIT availability
 
 **Acceptance criteria:**
-1. Job-type exclusion level confirmed: SKU-level in F&O or equipment-type level (OQ A4 resolved).
-2. Exclusions apply to both parent and substitute SKUs.
-3. ServiceBench SKU-level exclusion config deprecated for migrated stores.
+1. Job-type exclusion stored as **SKU-level attribute** in DAX; MDM + **Robbie** security on existing DAX form (OQ **A4** resolved 2026-03-20).
+2. Exclusions returned in availability/BOM response; **SB adjudicates** (OQ **D3** resolved 2026-03-20).
+3. Exclusions apply to both parent and substitute SKUs.
+4. ServiceBench SKU-level exclusion config deprecated for migrated stores.
 
-**Blocked by:** A4, D3 | **ADO Story ID:** _(pending)_
+**Blocked by:** — | **ADO Story ID:** _(pending)_
 
 ---
 
@@ -635,9 +637,9 @@ Technical design questions only. Product/business questions are in **PRD §12**.
 
 | # | Question | Owner | Status | Blocks |
 |---|----------|-------|--------|--------|
-| A1 [ARCH] | Peril-to-equipment-type translation: DAX or ServiceBench? | Ankit / DAX Arch | Open | EP1-S1 |
-| A2 [ARCH] | Bypass config: DAX peril+client vs SB client-level? | Ankit / DAX Arch | Open | EP1-S1 |
-| A4 [ARCH] | Job-type exclusions: SKU-level or equipment-type level in F&O? | Robbie Carter / DAX | Open | EP1-S5 |
+| A1 | Peril-to-part-type: **ServiceBench** owns mapping; DAX consumes part types | Ankit / DAX Arch | **Resolved** | — |
+| A2 [ARCH] | Bypass config (TELUS/non-LCM): ties to **B1/B2**; generic DAX vs SB TBD | Ankit / DAX Arch | Open | EP1-S1 |
+| A4 | Job-type exclusions: **SKU-level** in DAX; Robbie security on existing form | Robbie Carter / DAX | **Resolved** | — |
 | B1 [ARCH] | TELUS: Plan A (full perils) vs Plan B (LCM-only + bypass)? | Ankit / TELUS rel. | Open | EP3-S1, EP3-S2a, EP3-S2b |
 | B2 [ARCH] | Bypass flag: DAX BOM response or SB client config? | DAX Arch | Open | EP3-S2b |
 | C1 [ARCH] | Soft reservation lifecycle ownership end-to-end | DAX / SB Arch | Open | EP4-S1 |
@@ -645,15 +647,15 @@ Technical design questions only. Product/business questions are in **PRD §12**.
 | C5 [ARCH] | Double-deduction prevention: soft + hard reservation state | DAX Arch | Open | EP4-S2 |
 | C6 [ARCH] | UBIF Legacy reservation: not-reservable response vs SB always reserves? | DAX / SB | Open | EP3-S1 |
 | D1 [ARCH] | Availability API: separate flags for in-stock and JIT per part line? | DAX Arch | Open | EP1-S1, EP1-S2 |
-| D2 [ARCH] | Shipping days out in availability API response? | DAX Arch | Open | EP1-S1 |
-| D3 [ARCH] | Job-type exclusion: pre-check or returned in response? | DAX Arch | Open | EP1-S5 |
+| D2 | Shipping days out in availability API response? | DAX Arch | **Resolved** | — |
+| D3 | Job-type exclusion: **returned in response** (post-filter) | DAX Arch | **Resolved** | — |
 | D4 [ARCH] | Reservation + JIT order: single combined call or separate? | DAX Arch | Open | EP1-S4, EP1-S6 |
 | E1 [ARCH] | Warehouse ID format standardization for 3rd party providers | DAX / SB Eng | Open | EP3-S3 |
-| E2 [ARCH] | ISP vs SUR routing logic for shared UBIF store ID | DAX / SB Eng | Open | EP1-S3 |
+| E2 | ISP vs SUR: **LOB** routing (WLI vs WCF); internal UBIF vs America's IVS = DAX PBI | DAX / SB Eng | **Resolved** (SB contract) | — |
 | G1 [ARCH] | MFE vs WMA for AOP: WMA Phase 1 confirmed; EA sign-off needed | DAX / Prism | Open | EP5-S1, EP5-S2 |
 | G2 [ARCH] | Identity for AOP providers in Prism Elite (Hydra structure) | Sandeep / Corey Street | Open | EP5-S3 |
 | I1 [ARCH] | BOM lookup: embed in EIAA or separate BOM service? | Ankit / DAPI / Integration | Open | EP1-S1 |
-| I2 [ARCH] | AOP JIT reservation required when availability = false? | Avengers / DAX Arch | Open | EP4-S1, EP5-S1 |
+| I2 | AOP JIT reservation required when availability = false? | Avengers / DAX Arch | **Resolved** | — |
 | I3 [ARCH] | Substitution matrix: reuse Replacement Matrix vs new F&O entity? | Avengers / Robbie Carter / Rose | Open | EP6-S2 |
 
 ---
@@ -664,14 +666,14 @@ Technical design questions only. Product/business questions are in **PRD §12**.
 
 | FR | Requirement (summary) | Covered by | Status |
 |----|-----------------------|------------|--------|
-| FR-1 | Single availability + reservation API | EP1-S1, EP1-S4 | Draft — blocked A1 A2 D1 D2 D4 |
-| FR-2 | UBIF orchestration API (distro, routing, deprecate feeds) | EP1-S2, EP1-S3 | Draft — blocked D1, E2 |
+| FR-1 | Single availability + reservation API | EP1-S1, EP1-S4 | Draft — blocked A2 D1 D4 I1 |
+| FR-2 | UBIF orchestration API (distro, routing, deprecate feeds) | EP1-S2, EP1-S3 | EP1-S3 **Grooming Ready**; EP1-S2 Draft — blocked D1 |
 | FR-3 | Part price on Job/Claim | EP2-S1, EP2-S2, EP2-S3 | Draft — EP2-S3 blocked H1 |
 | FR-4 | NAOP migration — Mobile Clinic + Mexico | EP3-S1, EP3-S2a, EP3-S2b, EP3-S3 | Draft — blocked B1 B2 B4 |
 | FR-5 | AOP migration — 3rd party Asurion-owned parts | EP5-S1, EP5-S2, EP5-S3, EP5-S4 | Draft — blocked G1 G2 F1 F2 |
-| FR-6 | UBIF Next Gen orchestration | EP1-S1, EP1-S2 | Draft — blocked A1 A2 D1 |
+| FR-6 | UBIF Next Gen orchestration | EP1-S1, EP1-S2 | EP1-S3 ready; EP1-S1/S2 Draft — blocked A2 D1 I1 |
 | FR-7 | Phased rollout + rollback | EP7-S1, EP7-S2 | Draft — EP7-S2 blocked D6 |
-| FR-8 | JIT — availability API + configuration | EP1-S1 (flag + days out), EP1-S5 (exclusions), EP1-S6 (order creation) | Draft — blocked A4 D3 D4 D5 |
+| FR-8 | JIT — availability API + configuration | EP1-S1 (flag + days out), EP1-S5 (exclusions), EP1-S6 (order creation) | EP1-S5 **Grooming Ready**; remainder Draft — blocked D4 D5 I1 |
 | FR-9 | BOM + substitution matrix | EP6-S1, EP6-S2, EP6-S3 | Draft — blocked F1 H4 A3 |
 | FR-10 | Soft reservations via IVS | EP4-S1, EP4-S2, EP4-S3 | Draft — blocked C1 C4 C5 |
 | FR-11 | SKU / MDM setup migration | EP6-S1, EP5-S4 | Draft — blocked F1 F2 |
