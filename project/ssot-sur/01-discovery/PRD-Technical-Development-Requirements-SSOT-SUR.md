@@ -937,3 +937,123 @@ Technical design questions only. Product/business questions are in **PRD §12**.
 | Feature | F-8 | UBIF Legacy Availability — Deferred | EP-5 (deferred) | EP-1 | FR-2 | Q3+ | — | Avengers | Dev | New | [677454](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677454) | H6 |
 | Feature | — | AVENGERS: Discussions, KT sessions, Design | 676288 | EP-1 | — | Ongoing | — | Avengers | **BA/KT** | In Progress | [676288](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/676288) | — |
 | Feature | — | BeyondX: KT and Requirements gathering | 679639 | EP-1 | — | Ongoing | — | BeyondX | **BA/KT** | In Progress | [679639](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679639) | — |
+
+---
+
+## 15. Grooming Readiness & ADO Gap Assessment
+
+> **Purpose:** Pre-grooming review for technology teams. Audits every PRD story against its ADO work item, identifies stories ready to groom vs. blocked, and surfaces mismatches between the PRD and ADO that must be resolved before sprint planning.
+>
+> **Last reviewed:** 2026-03-26
+
+---
+
+### Story Readiness by Feature and Quarter
+
+> **Legend:** ✅ YES = story can be presented in a grooming session now · ❌ NO = blocked, do not groom · ⛔ HOLD = feature-level hold, no stories until gate clears · _(create)_ = ADO work item does not exist yet — PM action required
+
+| Feature | PRD Story | FR | ADO Feature | ADO Story | PRD Status | Groom Ready? | Blockers | Team |
+|---------|-----------|----|-----------|-----------|---------|----|------|------|
+| **F-1 · Q1** | US-1.1 | FR-3 | _(pending — retrieve)_ | _(pending — retrieve)_ | Done ✅ | N/A | — | BeyondX |
+| | US-1.2 | FR-3 | _(pending — retrieve)_ | _(pending — retrieve)_ | Active | N/A | — | BeyondX |
+| **F-2 · Q2** | US-2.1 | FR-1, FR-8 | [677038](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677038) | [677037](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677037) | Draft | ❌ NO | A2 [ARCH], I1 (near-res) | Avengers |
+| | US-2.2 | FR-2 | 677038 | **_(create)_** | **Grooming Ready** | ✅ YES | — | Avengers |
+| | US-2.3 | FR-6 | 677038 | **_(create)_** | **Grooming Ready** | ✅ YES | — | Avengers + BeyondX |
+| | US-2.4 | FR-1 | 677038 | **_(create)_** | Draft | ✅ YES | — _(D4 resolved 03/26)_ | Avengers |
+| | US-2.5 | FR-8 | [679502](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679502) | **_(create)_** | **Grooming Ready** | ✅ YES | — | Avengers |
+| | US-2.6 | FR-8 | 679502 | **_(create)_** | Draft | ❌ NO | D5 | Avengers |
+| **F-3 · Q2** | US-3.1 | FR-9, FR-11 | [679640](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679640) | **_(create)_** | Draft | ❌ NO | F1 | Avengers |
+| | US-3.2 | FR-9 | [681046](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/681046) | **_(create)_** | Draft | ❌ NO | I3 [ARCH], H4 | Avengers |
+| | US-3.3 | FR-9 | 679640 | **_(create)_** | Draft (BUS) | ❌ NO | A3 | Avengers |
+| **F-4 · Q2 ⚠️** | US-4.1 | FR-10 | _(pending H8)_ | _(pending)_ | Draft | ⛔ HOLD | H8 (scope); C1, C4 | Avengers |
+| | US-4.2 | FR-10 | _(pending H8)_ | _(pending)_ | Draft | ⛔ HOLD | H8 (scope); C5 | Avengers |
+| | US-4.3 | FR-10 | _(pending H8)_ | _(pending)_ | Draft | ⛔ HOLD | H8 (scope); C4 | Avengers |
+| **F-7 · Cross** | US-7.1 | FR-7 | [679641](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679641) ⚠️ | **_(create)_** | Draft | ✅ YES | — | BeyondX |
+| | US-7.2 | FR-7 | 679641 ⚠️ | **_(create)_** | Draft (BUS) | ❌ NO | D6 | BeyondX |
+| **F-5 · Q3** | US-5.1 | FR-5 | [677040](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677040) | **_(create)_** | Draft | ❌ NO | G2, H15, H17 | Avengers |
+| | US-5.2 | FR-5 | 677040 | **_(create)_** | Draft | ❌ NO | G2, H15, H16 | Avengers |
+| | US-5.3 | FR-5 | 677040 | **_(create)_** | Draft | ❌ NO | G2, H16 | Avengers |
+| | US-5.4 | FR-11 | 677040 | **_(create)_** | Draft | ❌ NO | F1, F2 | Avengers |
+| | US-1.3 | FR-12 | _(pending)_ | **_(create)_** | Draft (BUS) | ❌ NO | H1 | BeyondX |
+| **F-6 · Q4** | US-6.1 | FR-4 | [677039](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677039) | **_(create)_** | Draft | ❌ NO | B1 [ARCH] | Integration |
+| | US-6.2 | FR-4 | 677039 | **_(create)_** | Draft | ❌ NO | B1 [ARCH] | Integration |
+| | US-6.3 | FR-4 | 677039 | **_(create)_** | Draft | ❌ NO | B1 [ARCH], B2 [ARCH] | Integration |
+| | US-6.4 | FR-4 | 677039 | **_(create)_** | Draft | ❌ NO | B4, E1 [ARCH] | Integration |
+
+> **Stories ready to create in ADO now (Grooming Ready, no ADO story):** US-2.2 · US-2.3 · US-2.4 · US-2.5 · US-7.1
+
+---
+
+### Gap A — PRD Story Has No ADO Work Item
+
+> Stories in the PRD backlog not yet created as ADO work items. Sorted by urgency.
+
+| # | Severity | PRD Story | FR | Quarter | Reason not created | Action | Owner |
+|---|----------|-----------|----|---------|--------------------|--------|-------|
+| G-1 | 🔴 Critical | US-2.2 | FR-2 | Q2 | Grooming Ready; no blockers | **Create ADO User Story** under [677038](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677038) | PM |
+| G-2 | 🔴 Critical | US-2.3 | FR-6 | Q2 | Grooming Ready; no blockers | **Create ADO User Story** under [677038](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677038) | PM |
+| G-3 | 🔴 Critical | US-2.4 | FR-1 | Q2 | D4 resolved 03/26 — Reservation API unblocked | **Create ADO User Story** under [677038](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677038) | PM |
+| G-4 | 🔴 Critical | US-2.5 | FR-8 | Q2 | Grooming Ready; no blockers | **Create ADO User Story** under [679502](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679502) | PM |
+| G-5 | 🟡 Medium | US-7.1 | FR-7 | Cross | Grooming Ready; ADO Feature 679641 misaligned (see Gap B-5) | Create after B-5 ADO Feature split | PM |
+| G-6 | 🟡 Medium | US-2.6 | FR-8 | Q2 | Blocked D5 (JIT record ownership — partial) | Create after D5 confirmed | PM |
+| G-7 | 🟡 Medium | US-3.1 | FR-9, FR-11 | Q2 | Blocked F1 (SB field documentation — Raghu/SCM) | Create after F1 delivered | PM |
+| G-8 | 🟡 Medium | US-1.1, US-1.2 | FR-3 | Q1 | ADO story IDs exist but not filled in TRD §14 | Retrieve from ADO (search Epic 676287) and fill `_(pending)_` cells | PM |
+| G-9 | 🟢 Low | US-3.2 | FR-9 | Q2 | Blocked I3 [ARCH] (sub matrix scope), H4 (ownership) | Create after I3 + H4 resolved | PM |
+| G-10 | 🟢 Low | US-3.3 | FR-9 | Q2 | BUS — blocked A3 (OEM equipment type owner TBD) | PM to confirm A3 owner before dev | PM |
+| G-11 | 🟢 Low | US-5.1–5.4 | FR-5, FR-11 | Q3 | Blocked G2, H15, H16, H17 | Create once identity + UI path resolved | PM |
+| G-12 | 🟢 Low | US-6.1–6.4 | FR-4 | Q4 | Blocked B1 [ARCH], B2 [ARCH], B4, E1 [ARCH] | Create after TELUS architecture decisions | PM |
+| G-13 | 🟢 Low | US-1.3 | FR-12 | Q3 | Blocked H1 (3rd party pricing scope) | Create after H1 scoped by Bryant | PM |
+| G-14 | ⛔ HOLD | US-4.1–4.3 | FR-10 | Q2 | H8 not answered; C1/C4/C5 open | **Do not create** until Bryant/Michelle confirm H8 | Bryant |
+
+---
+
+### Gap B — ADO Work Item Has No PRD Story Mapping
+
+> ADO items that don't correspond to a named PRD User Story. Needs mapping, AC update, or a new PRD story.
+
+| # | Severity | ADO ID | ADO Title | Tagged FR | Quarter | Gap | Action |
+|---|----------|--------|-----------|-----------|---------|-----|--------|
+| B-1 | 🔴 Critical | [679882](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679882) | New config: Peril → Equipment Type Mapping | FR-9 | Q2 | BUS — "For Biz confirmation" tag; A3 open; no decision made | PM to confirm A3 owner; schedule decision. [679886] dev blocked until resolved |
+| B-2 | 🔴 Critical | [679886](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679886) | Validate Peril → Equipment Type Mapping | FR-9 | Q2 | Dev blocked on B-1 BUS decision | Dependent on B-1 |
+| B-3 | 🔴 Critical | [680934](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/680934) | JIT flag management — 3rd Party AOP | FR-5 | Q2 ⚠️ | AOP scope (Q3) filed as Q2; no PRD story | Confirm with Avengers: move to F-5 Q3 or retain Q2? Update ADO quarter |
+| B-4 | 🔴 Critical | [681066](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/681066) | JIT flag indicator for AOP SKUs | FR-5 | Q2 ⚠️ | Same scope concern as B-3 | Same action as B-3 |
+| B-5 | 🔴 Critical | [679641](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679641) | "On Demand Ordering" — rollout framework + AOP ordering mixed | FR-7, FR-5 | Q2/Q3 | ADO Feature conflates rollout flag framework (FR-7) and AOP on-demand ordering (FR-5) | **Split:** create new ADO Feature for F-7 per-location rollout; move WMA on-demand stories ([681260–81267](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/681260)) under F-5 (677040) |
+| B-6 | 🟡 Medium | [680113](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/680113) | UBIF Enable IVS for F&O Data | FR-1 | Q2 | Done ✅ — may close OQ K3 (Q2 technical prerequisite) | Confirm with Matt Bertrand: does this close K3? If yes → mark K3 Resolved |
+| B-7 | 🟡 Medium | [680122](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/680122) | UBIF NG Part SKU → Asurion SKU Mapping Design | FR-1 | Q2 | Committed 🔵 — design gate for US-2.1 AC; no PRD story | Use output to finalize US-2.1 AC before US-2.1 enters sprint |
+| B-8 | 🟡 Medium | [679505](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679505) | Design contract changes for JIT parts TO | FR-8 | Q2 | Committed 🔵 — design gate for US-2.6 AC; no PRD story | Use output to finalize US-2.6 AC before it enters sprint |
+| B-9 | 🟡 Medium | [681047](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/681047) | Part Sub Matrix — R&D & Design | FR-9 | Q2 | R&D gate for US-3.2; must complete before 681155/681160 | Ensure 681047 is scheduled; gates US-3.2 grooming |
+| B-10 | 🟡 Medium | [681155](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/681155) | Availability API Logic — Part Sub Matrix Sprint 271 | FR-9 | Q2 | No PRD story; placeholder sprint PBI; I3 open | Do not sprint until I3 resolved and US-3.2 is groomed; map to US-3.2 |
+| B-11 | 🟡 Medium | [681160](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/681160) | Availability API Logic — Part Sub Matrix Sprint 272 | FR-9 | Q2 | Same as B-10 | Same as B-10 |
+| B-12 | 🟡 Medium | [681166](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/681166) | Part Sub Matrix config SB1/UAT/Testing | FR-9 | Q2 | Validation PBI; no PRD story | Map to US-3.2 testing AC |
+| B-13 | 🟡 Medium | 681073 _(in [681055](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/681055))_ | JIT lead time: battery=7d, non-battery=3d | FR-8 | Q2 | No PRD story; no corresponding AC in US-2.6 | **Add to US-2.6 AC** (D2 confirmed; SCM-configurable) before 681073 enters sprint |
+| B-14 | 🟡 Medium | [681260–681267](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/681260) | WMA On Demand Ordering (7 stories) | FR-5 | Q3 | No PRD stories map to them; under wrong ADO Feature | Confirm D6/H14; create **US-5.5 WMA On-Demand Ordering** if in scope; move under F-5 (677040) |
+
+---
+
+### Gap C — Timing & Sprint Risks
+
+| # | Severity | Item | Risk | Action | Owner |
+|---|----------|------|------|--------|-------|
+| C-1 | 🔴 Critical | F-3a / [679640](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679640) | Target date **2026-03-30 has passed** — BeyondX SUR SSOT Configs & Mappings shows no progress | Immediate escalation: discuss with BeyondX this week; confirm blocked by A3/F1 or under-prioritized | PM |
+| C-2 | 🟡 Medium | US-2.1 / [677037](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/677037) | In ADO as "New" — unassigned; A2 + I1 still open; [680122] design in sprint | Do not assign to sprint until A2 resolved; confirm 677037 is correctly structured vs design stories | Avengers |
+| C-3 | 🟡 Medium | K3 / [680113](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/680113) | "UBIF Enable IVS for F&O Data" Done ✅ — may close Q2 prerequisite OQ K3 | Confirm with Matt Bertrand; if resolved → mark K3 Resolved, remove from Q2 risk list | PM |
+| C-4 | 🟡 Medium | 681073 JIT lead time | No PRD story or AC captures battery=7d/non-battery=3d; 681073 may enter sprint without it | Add to US-2.6 AC before 681073 is scheduled | PM |
+| C-5 | 🟢 Low | US-1.1 + US-1.2 ADO IDs | ADO story IDs for Done/Active Q1 stories not filled in TRD §14 | Retrieve from ADO and fill `_(pending)_` in §14 | PM |
+
+---
+
+### Pre-Grooming Actions Summary
+
+| Priority | Action | Owner | Target |
+|----------|--------|-------|--------|
+| 🔴 Immediate | **Create ADO User Stories** for US-2.2, US-2.3, US-2.4, US-2.5 (all Grooming Ready; sprint planning blocked without them) | PM | Before next sprint planning |
+| 🔴 Immediate | **Escalate F-3a / [679640](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679640)** — 2026-03-30 deadline passed with no progress | PM | This week |
+| 🔴 Immediate | **Resolve Q2 vs Q3 for [680934](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/680934) + [681066](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/681066)** — AOP JIT flag stories in wrong quarter | PM + Avengers | This sprint |
+| 🔴 Immediate | **Split ADO Feature [679641](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/679641)** — create new F-7 rollout ADO feature; move WMA stories to F-5 (677040) | PM + BeyondX | Before Q2 grooming |
+| 🟡 This sprint | **Confirm K3 with Matt Bertrand** — does [680113](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/680113) Done close OQ K3? | PM | This sprint |
+| 🟡 This sprint | **Resolve OQ A3** — confirm OEM equipment type owner; unblocks [679882] BUS + [679886] dev | PM | This sprint |
+| 🟡 This sprint | **Add JIT lead time to US-2.6 AC** — battery=7d, non-battery=3d (D2 confirmed; 681073) | PM | Before 681073 sprints |
+| 🟡 This sprint | **Retrieve US-1.1 + US-1.2 ADO IDs** and fill TRD §14 | PM | This sprint |
+| 🟡 Grooming prep | **Create ADO User Story for US-7.1** after ADO Feature 679641 is split | PM | Before rollout planning |
+| 🟡 Grooming prep | **Schedule H8 decision with Bryant/Michelle** — F-4 Soft Reservations scope gate; entire feature on hold | PM | Before Q2 grooming |
+| 🟢 Q3 prep | **Confirm D6 + H14** scope; create US-5.5 WMA On-Demand Ordering story if in scope; move [681260–81267] to F-5 | PM | Q2 planning cycle |
