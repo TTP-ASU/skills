@@ -8,17 +8,21 @@
 | Resolve open question | `Answer: A1 — [text]. Source: [person, date]` |
 | Pull Notion comments | `Sync Notion notes` |
 | Process a new document | `Ingest document: @path/to/file.pdf` |
+| ServiceBench field table (OQ F1) | `Ingest document: @servicebench-docs/[file]` |
+| Draft story AC (DAX + SB rules) | `Write story: [ID]` |
+| Validate story AC against sources | `Validate AC: [ID]` |
 | Change a specific FR | `Update FR-4: [describe the change]` |
-| Mark story ready to groom | `Story ready: EP1-S2` |
-| Log ADO work item | `ADO created: EP1-S1 = [URL]` |
+| Mark story ready to groom | `Story ready: [story ID]` |
+| Log ADO work item | `ADO created: [story ID] = [URL]` |
 | Audit PRD health | `PRD health check` |
 | Draft weekly update | `Draft leadership update: week of [date]` |
+| Archive past updates | `Archive updates` |
 | Log a scope change | `Scope change: [description]` |
 | Sync to Notion | `Push PRD` / `Push TDR` / `Push all` |
 
 ---
 
-Copy-paste (or paraphrase) any command below. Cursor will follow the workflow defined in `.cursor/rules/pm-document-style.mdc` and `.cursor/rules/meeting-notes-and-open-questions.mdc`.
+Copy-paste (or paraphrase) any command below. Cursor will follow the workflow defined in `.cursor/rules/pm-document-style.mdc` and `.cursor/rules/meeting-notes-and-open-questions.mdc`. For DAX field names and ServiceBench F1 placeholders, also apply `project/ssot-sur/.cursor/rules/dax-api-reference.mdc` when working in SSOT-SUR.
 
 **All commands follow the review-before-push rule:** Cursor drafts locally and shows you a diff before touching Notion.
 
@@ -80,6 +84,43 @@ Ingest document: [drag file into chat or provide path]
 
 ---
 
+## ServiceBench field documentation (OQ F1)
+
+```
+Ingest document: @servicebench-docs/[file name or path]
+```
+**What happens:** Reads the uploaded or pasted document (Raghu/SCM field table, export, or spreadsheet) → maps each ServiceBench field to rows in `01-discovery/servicebench-docs/field-table.md` → proposes updates to `01-discovery/open-questions.md` (mark **F1** Resolved with source/date when the table is complete) → proposes **TRD §4 Data Mapping** stubs or full content in `01-discovery/PRD-Technical-Development-Requirements-SSOT-SUR.md` → re-evaluates stories with `Blocked by: F1` (e.g. EP5-S4, EP6-S1) and proposes `Grooming Ready` only when **F1** and any other blockers (e.g. **F2**) are resolved. Shows diff. Waits for approval before Notion push.
+
+**Examples:**
+- `Ingest document: @servicebench-docs/raghu-part-master-fields.xlsx`
+- `Ingest document: @01-discovery/servicebench-docs/paste-field-table.txt`
+
+**Cross-check:** Validated DAX field names remain in `01-discovery/dax-repos/`; this command fills the **ServiceBench** side of the mapping.
+
+---
+
+## Write or validate story acceptance criteria
+
+```
+Write story: [story ID]
+```
+**What happens:** Opens the story block in the TDR (`01-discovery/PRD-Technical-Development-Requirements-SSOT-SUR.md`) → drafts or expands **Acceptance criteria** using **confirmed DAX** field names from `01-discovery/dax-repos/` (`inventory-api.md`, `github-repos.md`) → for any required **ServiceBench** field not yet in `01-discovery/servicebench-docs/field-table.md`, inserts **`[pending F1 — Raghu/SCM]`** instead of inventing names → checks `Blocked by` in the master backlog against `01-discovery/open-questions.md` and does **not** recommend `Grooming Ready` while a blocker is Open. Shows diff.
+
+**Examples:**
+- `Write story: US-2.1`
+- `Write story: US-5.4`
+
+```
+Validate AC: [story ID]
+```
+**What happens:** Reads the story's numbered AC → checks each technical field name against `01-discovery/dax-repos/` (DAX) and `01-discovery/servicebench-docs/field-table.md` (ServiceBench) → lists **unknown or unconfirmed** fields → suggests replacing guessed SB fields with **`[pending F1 — Raghu/SCM]`** where applicable. Read-only or suggested edits only (user approves).
+
+**Examples:**
+- `Validate AC: US-2.1`
+- `Validate AC: US-6.1`
+
+---
+
 ## Update a specific FR
 
 ```
@@ -106,8 +147,8 @@ ADO created: [story ID] = [ADO work item URL]
 **What happens (ADO created):** Fills the ADO Story ID column in the TDR master backlog with the link and changes status to `In ADO`.
 
 **Examples:**
-- `Story ready: EP1-S2` — mark as Grooming Ready
-- `ADO created: EP1-S1 = https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/688001`
+- `Story ready: US-2.1` — mark as Grooming Ready
+- `ADO created: US-2.1 = https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/688001`
 
 ---
 
@@ -141,6 +182,22 @@ Draft leadership update: week of [date]
 
 ---
 
+## Archive past updates
+
+```
+Archive updates
+```
+**What happens:** Moves the previous week's leadership update from the main project page into the **Past Updates Archive** child page (`🗂️`), formatted as a collapsible toggle. The current week's update stays visible on the project page. Older entries accumulate in the archive, each as an expandable toggle labelled `Week of [date] — [status emoji] [STATUS]`.
+
+- Archive page: [Past Updates Archive](https://www.notion.so/32d9532a1f8681659c54d87f503f1aad) (child of APC-2299 project page)
+- Always shows a diff before making any Notion changes.
+
+**Variants:**
+- `Archive updates` — auto-detects all sections older than the current week and moves them
+- `Archive updates: March 16` — archive a specific week by date
+
+---
+
 ## Scope change
 
 ```
@@ -149,7 +206,7 @@ Scope change: [describe what's in or out and why]
 **What happens:** Identifies all affected FRs and TDR stories → proposes PRD §5 (scope) and appendix updates → flags open questions that need revisiting. Shows diff.
 
 **Examples:**
-- `Scope change: UBIF Legacy (EP-1 legacy) is out of scope. All stores migrating to Next Gen by Q3; no bridge solution needed.`
+- `Scope change: UBIF Legacy is out of scope. All stores migrating to Next Gen by Q3; no bridge solution needed.`
 - `Scope change: BAU Portal feed migration is now confirmed in scope for Q4.`
 
 ---
@@ -169,4 +226,4 @@ Push all
 
 ---
 
-> **Tip:** You don't have to use the exact wording above. These are patterns — Cursor will recognize reasonable paraphrases. The key words are: `capture meeting`, `answer:`, `sync Notion notes`, `ingest document`, `update FR-`, `story ready`, `ADO created`, `PRD health check`, `draft leadership update`, `scope change`.
+> **Tip:** You don't have to use the exact wording above. These are patterns — Cursor will recognize reasonable paraphrases. The key words are: `capture meeting`, `answer:`, `sync Notion notes`, `ingest document`, `ingest document: @servicebench-docs`, `write story`, `validate ac`, `update FR-`, `story ready`, `ADO created`, `PRD health check`, `draft leadership update`, `archive updates`, `scope change`.

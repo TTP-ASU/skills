@@ -122,6 +122,56 @@ Report drift found. Propose fixes. Wait for user confirmation before applying.
 5. Flag conflicts with current content for user to resolve.
 6. Show proposed diffs. Wait for approval.
 
+**SSOT-SUR — field validation:** After extracting terms, cross-check field names against `project/ssot-sur/01-discovery/dax-repos/` (DAX) and `project/ssot-sur/01-discovery/servicebench-docs/field-table.md` (ServiceBench). Flag unconfirmed names. Full workflow: see **Field validation during document ingestion** in `SKILL.md`.
+
+---
+
+## `ingest document: @servicebench-docs/[file]` (SSOT-SUR / OQ F1)
+
+**Trigger examples:**
+- `ingest document: @servicebench-docs/raghu-part-master-fields.xlsx`
+- `ingest document: @01-discovery/servicebench-docs/paste-field-table.txt`
+
+**Steps:**
+1. Read the document (Raghu/SCM ServiceBench Part Master field table or equivalent).
+2. Populate or replace `01-discovery/servicebench-docs/field-table.md` with the authoritative table; remove the `[STUB — pending OQ F1 completion]` banner when complete.
+3. Update `01-discovery/open-questions.md`: **F1** → Resolved; fill Answer, Date, Source.
+4. Update **TRD §4 Data Mapping** in `PRD-Technical-Development-Requirements-SSOT-SUR.md`.
+5. Re-evaluate stories with `Blocked by: F1` (e.g. EP5-S4, EP6-S1); propose `Grooming Ready` only when F1 and any other row blockers (e.g. F2) are resolved.
+6. Cross-check DAX side: no change to `dax-repos/` unless the document also updates DAX mapping.
+7. Show diff summary. Wait for approval before Notion push.
+
+---
+
+## `write story: [ID]` (SSOT-SUR)
+
+**Trigger examples:**
+- `write story: EP1-S1`
+- `write story: EP5-S4`
+
+**Steps:**
+1. Locate the story in `PRD-Technical-Development-Requirements-SSOT-SUR.md` (master backlog + story details).
+2. Draft **Acceptance criteria** using confirmed DAX fields from `01-discovery/dax-repos/` (`inventory-api.md`, `github-repos.md`).
+3. For ServiceBench fields not in `servicebench-docs/field-table.md`, use **`[pending F1 — Raghu/SCM]`**.
+4. Verify `Blocked by` for that story against `open-questions.md`; do not state the story is grooming-ready if any blocker is Open.
+5. Apply `project/ssot-sur/.cursor/rules/dax-api-reference.mdc`.
+6. Show diff. Wait for approval.
+
+---
+
+## `validate ac: [ID]` (SSOT-SUR)
+
+**Trigger examples:**
+- `validate ac: EP1-S1`
+- `validate ac: EP6-S1`
+
+**Steps:**
+1. Read the story’s numbered AC in the TDR.
+2. List each technical field or API name mentioned.
+3. Confirm each against `01-discovery/dax-repos/` and `01-discovery/servicebench-docs/field-table.md`.
+4. Report: **confirmed**, **unconfirmed**, or **should use F1 placeholder**.
+5. Suggest edits; user approves before applying.
+
 ---
 
 ## `scope change: [description]`
@@ -151,3 +201,51 @@ Report drift found. Propose fixes. Wait for user confirmation before applying.
 6. Append as a new dated section: `## Project Latest Update — Week of [date]`.
 
 **Content rules:** Include meetings held, decisions made, risks with mitigants. Exclude story counts, Notion tooling changes, internal PM process tasks. Tables and bullets only; no prose paragraphs.
+---
+
+## `draft leadership update: week of [date]`
+
+**Trigger examples:**
+- `draft leadership update: week of March 24`
+- `draft weekly update`
+
+**Steps:**
+1. Read PRD-FR (goals, status, key milestones, risks) and TDR (stories in sprint vs blocked; feature status).
+2. Read `open-questions.md` — count open `[ARCH]` blockers; note any resolved this week.
+3. Draft the update using tables and bullets. **Never include:** story counts, Notion/ADO links, internal doc changes, story IDs.
+4. Show the draft. Wait for approval.
+5. Push to the **project page** (`3179532a1f8680daad25f1f0a0215679`) — not the PRD or TDR page.
+   - Append as a new section: `## Project Latest Update — Week of [date]`, placed **above** the previous week's entry.
+6. After pushing, trigger `archive updates` to move the now-previous entry to the archive page.
+
+**Content rules:** Include meetings held, decisions made, risks with mitigants, decisions needed from leadership. Exclude story-level backlog details, tooling changes, and internal PM process tasks.
+
+---
+
+## `archive updates` / `archive past updates`
+
+**Trigger examples:**
+- `archive updates`
+- `archive past updates`
+- `move the March 16 update to the archive`
+- `move older updates to archive`
+
+**Steps:**
+1. Fetch the project page (`3179532a1f8680daad25f1f0a0215679`) to read all current content.
+2. Identify all `## Project Latest Update — Week of [date]` sections **older than** the most recent one.
+3. Check if the **Past Updates Archive** child page exists — ID: `32d9532a1f8681659c54d87f503f1aad`. If not, create it:
+   - Use `notion-create-pages` with `parent: { page_id: "3179532a1f8680daad25f1f0a0215679" }`.
+   - Title: "Past Updates Archive", icon: 🗂️.
+4. Fetch the archive page to see existing toggle blocks (avoid duplicates).
+5. For each older update section, add it to the archive page as a `<details>/<summary>` toggle:
+   - Summary format: `Week of [date] — [status emoji] [STATUS]`
+   - Body: full update content (status line, tables, bullets) — preserve all formatting.
+6. On the main project page, replace each archived section with:
+   ```
+   ## Past Updates
+
+   <page url="https://www.notion.so/32d9532a1f8681659c54d87f503f1aad">
+   ```
+   Add this header only once; do not duplicate if it already exists.
+7. Show diff summary (what moves to archive, what stays on main page). Wait for approval.
+8. Push both pages: archive page (new toggle content) + main project page (removed old sections, added Past Updates embed).

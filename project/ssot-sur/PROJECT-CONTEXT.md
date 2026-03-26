@@ -19,7 +19,7 @@ Use this file so Cursor uses the right Notion pages and meeting database for SSO
 - **Template to use:** `templates/product-brief.md`, `templates/prd.md` (or your Notion templates)
 - **Meeting notes:** https://www.notion.so/3259532a1f8680c79296c1be61fa982d (Meetings database) · to process a raw transcript, use `Ingest document: @path/to/file`
 - **Open questions:** `01-discovery/open-questions.md` (table: Question | Source | Owner | Status | Answer | Date). Brief/PRD §7 point here.
-- **DAX API reference (confirmed):** `01-discovery/dax-repos/` — read path, write path, cross-validation; use for acceptance-criteria field names in all DAX-facing stories.
+- **DAX API reference (confirmed):** `01-discovery/dax-repos/` — read path, write path, cross-validation, and source-level function analysis; use for acceptance-criteria field names and grooming prep in all DAX-facing stories. Source: `asurion-private` GitHub org (read access confirmed 2026-03-24). ADO connection to be established at QA validation phase.
 - **ServiceBench field reference (pending OQ F1):** `01-discovery/servicebench-docs/` — partial knowledge from OQ F1; stub populated when Raghu/SCM delivers the full field table.
 - **Reference PDFs:** `references/` (source documents, exports, PDFs)
 - **Confluence (DDD — Feature Breakdown):** [Feature Breakdown](https://asurion.atlassian.net/wiki/spaces/DDD/pages/614007633/Feature+Breakdown) — SSOT / architecture feature list (space **DDD**). Use for traceability to DDD features in PRD/TRD; Cursor **Confluence MCP** must be authorized for automated fetch.

@@ -5,7 +5,8 @@ description: >-
   Use when the user wants to pull in meeting notes, capture an open question answer, update the PRD or TDR,
   run a document health check, or push changes to Notion. Triggers on phrases like "capture meeting",
   "update discovery docs", "sync docs", "PRD health check", "push PRD", "push TDR", "answer [ID]",
-  "update open questions", or any request to refresh discovery artifacts.
+  "update open questions", "ingest document", "ingest servicebench", "write story", "validate ac",
+  or any request to refresh discovery artifacts.
 ---
 
 # Discovery Document Sync
@@ -18,6 +19,7 @@ Always start by reading `PROJECT-CONTEXT.md` in the project root (e.g. `project/
 - Notion page IDs for PRD-FR, TDR, and project page
 - Notion meetings database URL
 - Local file paths for all discovery docs
+- For **SSOT-SUR**: paths to `01-discovery/dax-repos/` (confirmed DAX) and `01-discovery/servicebench-docs/` (ServiceBench — pending OQ F1 until field table is delivered)
 
 ## Document hierarchy (changes flow downward only)
 
@@ -35,6 +37,22 @@ ADO stories never update the PRD without a meeting decision first. Notion is the
 | `01-discovery/PRD-Functional-Requirements-SSOT-SUR.md` | Functional PRD (§2 RACI, §2a flows, §7 OQs) |
 | `01-discovery/PRD-Technical-Development-Requirements-SSOT-SUR.md` | TDR (master backlog, story blockers) |
 | `01-discovery/personas.md` | Persona definitions linked to flows and OQs |
+| `01-discovery/dax-repos/` | Confirmed DAX read/write field names and patterns for AC and architecture (inventory API + GitHub write-path analysis) |
+| `01-discovery/servicebench-docs/` | ServiceBench Part Master field reference — **`field-table.md` is a stub until OQ F1** (Raghu/SCM); use `[pending F1 — Raghu/SCM]` in AC when SB fields are unknown |
+| `project/ssot-sur/.cursor/rules/dax-api-reference.mdc` | Project rule: never invent DAX/SB field names; DAX from `dax-repos/`, SB from `servicebench-docs/` or F1 placeholder |
+
+## Field validation during document ingestion (SSOT-SUR)
+
+When ingesting any document for **SSOT-SUR** (general `ingest document:` or ServiceBench-specific — see `project/ssot-sur/COMMANDS.md`):
+
+1. **DAX fields** — Cross-check extracted field names against `01-discovery/dax-repos/` (`inventory-api.md`, `github-repos.md`, `README.md`). Treat names in those files as **confirmed** for acceptance criteria wording unless the source document explicitly supersedes them (then flag a conflict).
+2. **ServiceBench fields** — Cross-check against `01-discovery/servicebench-docs/field-table.md`. If a field is not listed there, mark it **unconfirmed** or use **`[pending F1 — Raghu/SCM]`** until the Part Master table is complete.
+3. **Unknown names** — Flag any field name that appears in ingested content but is not found in either source as **unconfirmed**; do not silently add to PRD/TDR as fact without user acknowledgment.
+4. **OQ F1 delivery (ServiceBench field table)** — When the ingested document **is** (or completes) Raghu’s ServiceBench field table:
+   - Populate or replace `01-discovery/servicebench-docs/field-table.md` with the full table (remove `[STUB — pending OQ F1 completion]` banner when done).
+   - Update `01-discovery/open-questions.md`: **F1** → Resolved, Answer + Date + Source.
+   - Update **TRD §4 Data Mapping** in `PRD-Technical-Development-Requirements-SSOT-SUR.md` with SB → DAX/F&O mapping columns as appropriate.
+   - Re-evaluate every story with **`Blocked by: F1`** (e.g. EP5-S4, EP6-S1); if all blockers for that story are Resolved, propose **Grooming Ready** per existing gating rules (F2 may still block some stories).
 
 ## Commands — run these workflows on trigger
 
@@ -48,6 +66,9 @@ See [commands.md](commands.md) for full detail on each. Summary:
 | `sync docs` | Check all local files for drift vs each other; surface what is stale |
 | `push PRD` / `push TDR` / `push all` | Show diff → wait for approval → push to Notion |
 | `ingest document: [file or paste]` | Map content to existing FRs or propose new ones; flag conflicts |
+| `ingest document: @servicebench-docs/[file]` | SB field table → `field-table.md`, OQ F1, TRD §4, unblock F1 stories (see `project/ssot-sur/COMMANDS.md`) |
+| `write story: [ID]` | Draft AC using `dax-repos/`; stub SB with `[pending F1]` where needed |
+| `validate ac: [ID]` | Check story AC field names against `dax-repos/` + `servicebench-docs/field-table.md` |
 | `scope change: [description]` | Update PRD §5 scope + flag affected FRs and TDR stories |
 
 ## Update workflow (required sequence)

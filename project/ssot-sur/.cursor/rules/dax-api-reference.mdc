@@ -1,0 +1,45 @@
+---
+description: SSOT-SUR — confirmed DAX field names from dax-repos/; ServiceBench fields pending OQ F1 (no invented names)
+globs:
+  - project/ssot-sur/**
+alwaysApply: false
+---
+
+# SSOT-SUR — DAX API reference and ServiceBench gap
+
+Use this rule when drafting or editing **acceptance criteria**, **story details**, or **TRD data-mapping** content for SSOT-SUR (`project/ssot-sur`).
+
+## Confirmed DAX sources (use these field names verbatim)
+
+| Source | Use for |
+|--------|---------|
+| `01-discovery/dax-repos/inventory-api.md` | Read path — IVS / inventory endpoints, query params, response fields |
+| `01-discovery/dax-repos/github-repos.md` | Write path — DTOs, event types, L7 gateway patterns |
+| `01-discovery/dax-repos/README.md` | Cross-validation and conflict notes |
+
+### Read path — typical response / query fields
+
+From `inventory-api.md` (confirm against file for full list): e.g. `AllowJustInTime`, `LeadTimeInDays`, `AvailableQty`, `ItemId`, `Warehouse`, and related `dimensions` / `quantities` as documented.
+
+### Write path — typical payload fields
+
+From `github-repos.md` / cited DTOs: e.g. `client`, `region`, `lineOfBusiness`, `itemId`, `wmsLocationId`, `dispatchParts`, and related fulfillment/consumption fields as documented.
+
+Do **not** invent DAX field names. If a field is not in these files, flag it: **unconfirmed — verify with DAX team or add to `dax-repos/` after validation.**
+
+## ServiceBench — pending OQ F1
+
+Authoritative ServiceBench Part Master field names and definitions live in **`01-discovery/servicebench-docs/field-table.md`** (stub until Raghu/SCM delivers the full table per **OQ F1**).
+
+- If a story or AC needs a ServiceBench field that is **not** yet documented in `servicebench-docs/field-table.md`, use the placeholder: **`[pending F1 — Raghu/SCM]`** instead of guessing.
+- After F1 is delivered and ingested, replace placeholders with real field names and update TRD §4 Data Mapping.
+
+## Blocked work until F1 (do not over-specify)
+
+- TRD §4 Data Mapping — complete table waits on F1 (+ mapping workshops).
+- Stories with `Blocked by: F1` (e.g. EP5-S4, EP6-S1) — do not mark **Grooming Ready** until F1 is Resolved in `open-questions.md` and `field-table.md` is updated.
+
+## Quick cross-check
+
+- DAX side: **`dax-repos/`** = confirmed for AC wording.
+- SB side: **`servicebench-docs/`** = partial until F1; **`open-questions.md` F1** = tracker.
