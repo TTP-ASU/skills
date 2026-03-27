@@ -25,6 +25,8 @@ So: **skills** = the actual skills. **skill-template** = how you create a new sk
 | **`ASURION-CURSOR-SETUP.md`** | **Product setup overview** – what’s in the repo for Product (skills, rules, templates). | Quick reference for Product skills and rules. Cursor/MCP setup lives in Asurion’s docs. |
 | **`docs/`** | **Docs** – Product management rules explained, and pointers to Asurion for setup. | `docs/PRODUCT-MANAGEMENT-RULES.md` for rules; `docs/README.md` for the rest. |
 | **`spec/`** | Agent Skills specification (if present). | Reference only. |
+| **`Cursor Projects/`** | Optional **nested clones** of other repos (e.g. APIM) for local work. | Tracked as **gitlinks** in this repo. If `git status` shows “modified content” under those paths, run `git reset --hard HEAD` **inside** each nested repo (or discard changes there) so the parent workspace stays clean — unless you intend to commit work in the child repo and update the parent’s pointer. |
+| **`project/`** | **Product project artifacts** (e.g. `project/ssot-sur`) — discovery docs, PROJECT-CONTEXT, PRD/TRD markdown. | SSOT-SUR and similar programs; not Anthropic demo skills. |
 
 ---
 

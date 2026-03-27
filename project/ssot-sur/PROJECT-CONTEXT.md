@@ -11,7 +11,7 @@ Use this file so Cursor uses the right Notion pages and meeting database for SSO
 
 ## Key documents
 
-- **Project page (APC-2299):** https://www.notion.so/3179532a1f8680daad25f1f0a0215679 ← post status updates here
+- **Project page (APC-2299):** https://www.notion.so/3179532a1f8680daad25f1f0a0215679 ← post status updates here · local leadership draft template: `01-discovery/leadership-update-week-of-2026-03-27.md` (copy body into a new dated section on the project page when publishing)
 - **Product Brief:** https://www.notion.so/asurionproduct/Product-Brief-SUR-SSOT-3259532a1f8680538478fe482766eb7b · local: `01-discovery/Product-Brief-SSOT-SUR.md`
 - **PRD — Functional Requirements:** https://www.notion.so/3259532a1f8680b08cc4ebb72fe7b535 · local: `01-discovery/PRD-Functional-Requirements-SSOT-SUR.md`
 - **PRD — Technical Development Requirements:** https://www.notion.so/3259532a1f8680e0946ec9fbb1e85d2f · local: `01-discovery/PRD-Technical-Development-Requirements-SSOT-SUR.md`
