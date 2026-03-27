@@ -1,11 +1,11 @@
 # TRD: Technical Requirements — SUR SSOT (Same Unit Repair · Single Source of Truth)
 
 **Tech lead / architect:** Ankit / Tim Clemens (Enterprise Architecture)  
-**Last updated:** 2026-03-26 (**Strategy Discussion 2026-03-26**: RT-6 D4 [ARCH] cleared — separate calls confirmed; Distro Migration co-dependency noted; L1/L2 new OQs · **03/25 HLE discussion** — dev sizing added to US-2.1, US-2.4, US-5.1; multi-part reservation AC + cancellation latency added; flip-and-fold BAT edge case; 03/24-03/25 meeting notes captured)  
+**Last updated:** 2026-03-27 (**WMA–SB Cycle Count Gap Analysis** linked in §2 — Q3 WMA / cycle-count flow prep · Prior: **Strategy Discussion 2026-03-26**: RT-6 D4 [ARCH] cleared — separate calls confirmed; Distro Migration co-dependency noted; L1/L2 new OQs · **03/25 HLE discussion** — dev sizing added to US-2.1, US-2.4, US-5.1; multi-part reservation AC + cancellation latency added; flip-and-fold BAT edge case; 03/24-03/25 meeting notes captured)  
 **Status:** Draft — evolves as architecture decisions are finalized  
 **Related PRD:** [PRD — Functional Requirements SUR SSOT](https://www.notion.so/3259532a1f8680b08cc4ebb72fe7b535)  
 **Notion TRD page:** https://www.notion.so/3259532a1f8680e0946ec9fbb1e85d2f  
-**Synced with PRD:** 2026-03-26  
+**Synced with PRD:** 2026-03-27  
 **Azure DevOps:** Epic [676287](https://axasurion.visualstudio.com/AX7%20Core/_workitems/edit/676287) · org: `axasurion` · project: `AX7 Core` · connected via Cursor MCP
 
 > **Purpose:** This document defines the technical design and implementation approach for the initiative approved in the PRD. Business context, product requirements, functional requirements, and user/process flows are defined in the PRD. This document implements and extends them.
@@ -37,6 +37,7 @@ PRD goals and functional requirements drive all implementation choices. See PRD 
 - Parts Management Flows (Figma: `kRrljWUXdow6bg7KBHkkx7`) — Flow 1 (AOP), 2A/2B (NAOP), 3/5 (UBIF), 4 (BOM Setup)
 - [DDD Feature Breakdown](https://asurion.atlassian.net/wiki/spaces/DDD/pages/614007633/Feature+Breakdown) (Confluence space **DDD** — architecture / feature numbering reference for SSOT)
 - SUR SSOT Inventory Availability Orchestration diagrams (Confluence — add link when published beside Feature Breakdown)
+- **[WMA–SB Cycle Count Tool Gap Analysis](https://www.notion.so/asurionproduct/WMA-SB-Cycle-Count-Tool-Gap-Analysis-32f9532a1f868024b736fa8dfabf21ea)** (Notion) — pre–Q3 analysis; meetings planned to walk user flows / functionality vs ServiceBench; outcomes may add or reshape FR-5 / WMA backlog items (not committed scope until reviewed).
 
 _This section will expand with high-level component diagram, system boundaries, and major integration patterns once architecture working sessions complete._
 
@@ -54,7 +55,7 @@ _This section will expand with high-level component diagram, system boundaries, 
 | RT-4 | BOM lookup at job creation | SB → EIAA or separate BOM API | I1 [ARCH] — embed in EIAA vs separate BOM service |
 | RT-5 | Soft reservation at lead placement | SB → IVS → store confirmation | C1 [ARCH] — lifecycle ownership; C4 [ARCH] — expiration; C5 [ARCH] — double-deduction |
 | RT-6 | JIT availability + order | SB → EIAA (JIT flag) → order creation | A4 resolved (SKU); A5 — API dimensions; **D3 resolved**; **D4 resolved** — separate calls confirmed 2026-03-26 |
-| IL-1–IL-8 | AOP inventory lifecycle | WMA → D365 / DAX | G1 [ARCH] — UI path; G2 [ARCH] — identity |
+| IL-1–IL-8 | AOP inventory lifecycle | WMA → D365 / DAX | G1 resolved (WMA path — DDD-SUR 2026-03-26); **G2** identity + **H15/H16** UI/Prism access; see **WMA–SB Cycle Count Gap Analysis** (Notion, §2 refs) for Q3 cycle-count / flow gaps |
 
 ---
 
